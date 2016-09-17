@@ -1,7 +1,7 @@
 name:                Arksink
 version:             0.1.0.0
 synopsis:            Multibrowser cloud bookmark synchroniser
-description:         A cloud bookmark synchroniser for the indecisive
+description:         Bookmark management for the indecisive
 homepage:            https://arksink.io
 license:             MIT
 license-file:        LICENSE

@@ -14,4 +14,4 @@ index = H.docTypeHtml $ do
     H.body $ do
         H.main $ do
             H.h1 "Arksink"
-            H.h2 "A cloud bookmark synchroniser for the indecisive"
+            H.h2 "Bookmark management for the indecisive"

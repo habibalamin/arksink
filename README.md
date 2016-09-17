@@ -1,4 +1,4 @@
 Arksink
 =======
 
-A cloud bookmark synchroniser for the indecisive.
+Bookmark management for the indecisive.
