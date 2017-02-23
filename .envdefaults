@@ -1,0 +1,4 @@
+ARKSINK_DB_HOST='localhost'
+ARKSINK_DB_NAME='arksink'
+ARKSINK_DB_USERNAME="`whoami`"
+ARKSINK_DB_PASSWORD=''
