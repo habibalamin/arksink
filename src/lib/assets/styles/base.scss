@@ -1,0 +1,130 @@
+body {
+  width: 90%;
+  margin: 0 auto;
+
+  > * {
+    margin: 2rem 0;
+
+    > h1, > h2, > h3,
+    > h4, > h5, > h6 {
+      margin: 1rem 0;
+    }
+  }
+}
+
+header {
+  h1 {
+    font-size: 5rem;
+  }
+
+  h2 {
+    font-size: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  nav {
+    ul {
+      li {
+        font-size: 1.5rem;
+        list-style: none;
+        display: inline;
+
+        &:not(:first-child) { padding-left: 20px; }
+      }
+    }
+  }
+
+  #login {
+    float: right;
+  }
+}
+
+main {
+  .actions {
+    font-size: 1.5rem;
+  }
+
+  h1 {
+    font-size: 2rem
+  }
+
+  section#bookmarks {
+    article {
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      margin: 1rem 0;
+    }
+
+    margin-top: 2rem;
+  }
+
+  form {
+    input, textarea, select {
+      display: block;
+      margin: 10px 0;
+    }
+
+    input, select, label, button {
+      font-size: 1rem;
+    }
+
+    button {
+      /* Safari's default button appearance looks
+       * really bad when zoomed in or when it has
+       * some CSS applied to it. It seems there's
+       * a limit to the height you can apply to a
+       * button before it just refuses to comply,
+       * and the text is either half hidden, or a
+       * really ugly looking button style becomes
+       * the default.
+       *
+       * A -webkit-appearance: push-button demand
+       * helps a little bit, in that it stops the
+       * user zooming from unhinging the text, as
+       * well as just not allowing any CSS styles
+       * that increase the size to the point that
+       * the alternative (ugly) button appearance
+       * comes out.
+       */
+      -webkit-appearance: push-button;
+      margin: 0;
+    }
+  }
+}
+
+footer {
+  display: flex;
+  justify-content: space-between;
+
+  a {
+    text-decoration: underline;
+  }
+
+  section h1 {
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+  }
+
+  #useful-links {
+    text-align: left;
+  }
+
+  #copyright {
+    text-align: center;
+    align-self: center;
+  }
+
+  #editors-picks {
+    text-align: right;
+  }
+}
+
+ul li {
+  line-height: 1.5rem;
+}
+
+a {
+  text-decoration: none;
+}
