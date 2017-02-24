@@ -11,6 +11,7 @@ import Network.Wai.Middleware.Static (initCaching,
 import Network.Wai (Middleware)
 
 import qualified Landing as Landing
+import qualified Bookmark as Bookmark
 import qualified General.View as General.View
 
 run :: Int -> IO ()
@@ -27,6 +28,7 @@ server port cacheContainer = scotty port $ do
     middleware $ static cacheContainer
 
     Landing.routes
+    Bookmark.routes
 
     notFound General.View.notFound
 
