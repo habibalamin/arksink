@@ -21,3 +21,5 @@ tags
 /src/style.css
 /_site/
 /.dir-locals.el
+
+.env
