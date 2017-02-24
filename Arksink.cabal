@@ -16,9 +16,14 @@ library
   hs-source-dirs:      src/lib
   exposed-modules:     Arksink.Server
                      , Arksink.Client
-  other-modules:       Landing.URL
-                     , Landing.View
+  other-modules:       View
+                     , URL
+                     , Session.URL
+                     , About.URL
                      , Landing
+                     , Landing.URL
+                     , Landing.View
+                     , Bookmark.URL
   build-depends:       base >= 4.7 && < 5
                      , dotenv >= 0.3.1.0 && < 1
                      , unix >= 2.7.2.1 && < 3
