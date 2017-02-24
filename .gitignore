@@ -23,3 +23,6 @@ tags
 /.dir-locals.el
 
 .env
+public/
+node_modules/
+elm-stuff/

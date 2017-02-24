@@ -1,0 +1,23 @@
+{
+  "name": "arksink",
+  "version": "0.1.0-0",
+  "description": "Bookmark management for the indecisive",
+  "main": "arksink.js",
+  "repository": {
+    "type": "git",
+    "url": "http://code.alaminium.me/habibalamin/arksink"
+  },
+  "keywords": [
+    "link",
+    "bookmark",
+    "cloud",
+    "sync",
+    "browsers"
+  ],
+  "author": "Habib Alamin",
+  "license": "MIT",
+  "flat": true,
+  "dependencies": {
+    "reset-css": "^2.2.0"
+  }
+}

@@ -1,0 +1,15 @@
+{
+    "version": "0.1.0",
+    "summary": "Bookmark management for the indecisive",
+    "repository": "https://github.com/habibalamin/arksink.git",
+    "license": "MIT",
+    "source-directories": [
+        "src/lib/assets/scripts/elm"
+    ],
+    "exposed-modules": [],
+    "dependencies": {
+        "elm-lang/core": "5.0.0 <= v < 6.0.0",
+        "elm-lang/html": "2.0.0 <= v < 3.0.0"
+    },
+    "elm-version": "0.18.0 <= v < 0.19.0"
+}

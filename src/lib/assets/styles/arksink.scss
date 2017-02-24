@@ -1,0 +1,5 @@
+/* OPTIMIZE: fix libsass upstream so that @import implicitly prioritises
+ * .sass/.scss files over .css, thereby allowing importing of files from
+ * libraries downloaded by package managers containing multiple formats.
+ */
+@import 'reset-css/reset.scss';
