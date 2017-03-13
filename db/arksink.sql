@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 9.6.1
--- Dumped by pg_dump version 9.6.1
+-- Dumped by pg_dump version 9.6.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -65,10 +65,48 @@ ALTER SEQUENCE bookmarks_id_seq OWNED BY bookmarks.id;
 
 
 --
+-- Name: clients; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE clients (
+    id integer NOT NULL,
+    name text,
+    email_address text NOT NULL,
+    password_hash text NOT NULL
+);
+
+
+--
+-- Name: clients_id_seq; Type: SEQUENCE; Schema: public; Owner: -
+--
+
+CREATE SEQUENCE clients_id_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+--
+-- Name: clients_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: -
+--
+
+ALTER SEQUENCE clients_id_seq OWNED BY clients.id;
+
+
+--
 -- Name: bookmarks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
 ALTER TABLE ONLY bookmarks ALTER COLUMN id SET DEFAULT nextval('bookmarks_id_seq'::regclass);
+
+
+--
+-- Name: clients id; Type: DEFAULT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY clients ALTER COLUMN id SET DEFAULT nextval('clients_id_seq'::regclass);
 
 
 --
@@ -77,6 +115,14 @@ ALTER TABLE ONLY bookmarks ALTER COLUMN id SET DEFAULT nextval('bookmarks_id_seq
 
 ALTER TABLE ONLY bookmarks
     ADD CONSTRAINT bookmarks_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: clients clients_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY clients
+    ADD CONSTRAINT clients_pkey PRIMARY KEY (id);
 
 
 --
