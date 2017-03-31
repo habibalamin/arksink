@@ -18,10 +18,10 @@ data SessionClient = Guest | SignedIn Client deriving Show
 
 getCurrentClient :: ActionM SessionClient
 getCurrentClient = do
-    possibleSessionId <- getSessionId
-    case possibleSessionId of
-        Nothing -> return Guest
-        Just sessionId -> liftAndCatchIO $ getClientFromSessionId sessionId
+  possibleSessionId <- getSessionId
+  case possibleSessionId of
+    Nothing -> return Guest
+    Just sessionId -> liftAndCatchIO $ getClientFromSessionId sessionId
 
 isSignedIn :: SessionClient -> Bool
 isSignedIn = not . isGuest
@@ -35,16 +35,16 @@ clientCase client a b = if isGuest client then a else b client
 
 getClientFromSessionId :: ByteString -> IO SessionClient
 getClientFromSessionId sessionId = do
-    c <- Redis.connection
-    redisReply <- runRedis c . hget "sessions" $ sessionId
-    -- OPTIMIZE: WTF is this leaning shit?
-    case redisReply of
-        Left reply -> error $ show reply
-        Right possibleUserId -> do
-            case possibleUserId of
-                Nothing -> return Guest
-                Just userId -> do
-                    possibleClient <- getClient userId
-                    case possibleClient of
-                        Nothing -> return Guest
-                        Just client -> return $ SignedIn client
+  c <- Redis.connection
+  redisReply <- runRedis c . hget "sessions" $ sessionId
+  -- OPTIMIZE: WTF is this leaning shit?
+  case redisReply of
+    Left reply -> error $ show reply
+    Right possibleUserId -> do
+      case possibleUserId of
+        Nothing -> return Guest
+        Just userId -> do
+          possibleClient <- getClient userId
+          case possibleClient of
+            Nothing -> return Guest
+            Just client -> return $ SignedIn client

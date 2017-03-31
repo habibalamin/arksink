@@ -6,4 +6,4 @@ import Data.Maybe (fromMaybe)
 
 connection :: IO Connection
 connection = lookupEnv "ARKSINK_REDIS_DB" >>= \db ->
-    checkedConnect defaultConnectInfo { connectDatabase = fromMaybe 0 $ read <$> db }
+  checkedConnect defaultConnectInfo { connectDatabase = fromMaybe 0 $ read <$> db }

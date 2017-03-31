@@ -15,35 +15,35 @@ import qualified General.View as General.View
 
 routes :: ScottyM ()
 routes = do
-    get Bookmark.URL.indexRoute $ do
-        bookmarks <- liftAndCatchIO getBookmarks
-        Bookmark.View.index bookmarks >>= html . renderHtml
+  get Bookmark.URL.indexRoute $ do
+    bookmarks <- liftAndCatchIO getBookmarks
+    Bookmark.View.index bookmarks >>= html . renderHtml
 
-    get Bookmark.URL.showRoute $ do
-        bookmarkId :: Int <- param "id"
-        bookmark <- liftAndCatchIO $ getBookmark bookmarkId
-        let showBookmark = (>>= html . renderHtml) . Bookmark.View.show
-            in maybe General.View.notFound showBookmark bookmark
+  get Bookmark.URL.showRoute $ do
+    bookmarkId :: Int <- param "id"
+    bookmark <- liftAndCatchIO $ getBookmark bookmarkId
+    let showBookmark = (>>= html . renderHtml) . Bookmark.View.show
+      in maybe General.View.notFound showBookmark bookmark
 
-    get Bookmark.URL.newRoute $ do
-        Bookmark.View.new >>= html . renderHtml
+  get Bookmark.URL.newRoute $ do
+    Bookmark.View.new >>= html . renderHtml
 
-    post Bookmark.URL.createRoute $ do
-        title :: String <- param "title"
-        url :: String <- param "url"
-        bookmarkId <- liftAndCatchIO $ createBookmark title url
-        redirect $ Bookmark.URL.show bookmarkId
+  post Bookmark.URL.createRoute $ do
+    title :: String <- param "title"
+    url :: String <- param "url"
+    bookmarkId <- liftAndCatchIO $ createBookmark title url
+    redirect $ Bookmark.URL.show bookmarkId
 
-    get Bookmark.URL.editRoute $ do
-        text "Edit bookmark"
+  get Bookmark.URL.editRoute $ do
+    text "Edit bookmark"
 
-    patch Bookmark.URL.updateRoute $ do
-        text "Update bookmark"
+  patch Bookmark.URL.updateRoute $ do
+    text "Update bookmark"
 
-    put Bookmark.URL.replaceRoute $ do
-        text "Replace bookmark"
+  put Bookmark.URL.replaceRoute $ do
+    text "Replace bookmark"
 
-    delete Bookmark.URL.deleteRoute $ do
-        bookmarkId :: Int <- param "id"
-        liftAndCatchIO $ deleteBookmark bookmarkId
-        redirect Bookmark.URL.index
+  delete Bookmark.URL.deleteRoute $ do
+    bookmarkId :: Int <- param "id"
+    liftAndCatchIO $ deleteBookmark bookmarkId
+    redirect Bookmark.URL.index

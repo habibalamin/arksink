@@ -12,9 +12,9 @@ import View (layout)
 
 new :: ActionM Html
 new = layout "" $ do
-    H.h1 "Sign in"
+  H.h1 "Sign in"
 
-    H.form ! A.action Session.URL.createRoute ! A.method "POST" $ do
-        H.label "Email address" >> H.input ! A.name "email_address"
-        H.label "Password" >> H.input ! A.type_ "password" ! A.name "password"
-        H.button "Sign in"
+  H.form ! A.action Session.URL.createRoute ! A.method "POST" $ do
+    H.label "Email address" >> H.input ! A.name "email_address"
+    H.label "Password" >> H.input ! A.type_ "password" ! A.name "password"
+    H.button "Sign in"

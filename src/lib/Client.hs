@@ -15,14 +15,14 @@ import RequestInfo (relativeRefererOrRoot)
 
 routes :: ScottyM ()
 routes = do
-    get Client.URL.newRoute $ do
-        Client.View.new >>= html . renderHtml
+  get Client.URL.newRoute $ do
+    Client.View.new >>= html . renderHtml
 
-    post Client.URL.createRoute $ do
-        email_address ::     String <- param "email_address"
-        password      :: ByteString <- param "password"
+  post Client.URL.createRoute $ do
+    email_address ::     String <- param "email_address"
+    password      :: ByteString <- param "password"
 
-        liftAndCatchIO $ createClient email_address password
-        createSession email_address password
+    liftAndCatchIO $ createClient email_address password
+    createSession email_address password
 
-        redirect =<< relativeRefererOrRoot
+    redirect =<< relativeRefererOrRoot

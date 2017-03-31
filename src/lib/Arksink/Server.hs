@@ -18,23 +18,23 @@ import qualified General.View as General.View
 
 run :: Int -> IO ()
 run port = do
-    loadEnvFile
-    server port =<< initCaching PublicStaticCaching
+  loadEnvFile
+  server port =<< initCaching PublicStaticCaching
 
 loadEnvFile = Dotenv.parseFile ".env" >>= mapM_ setEnvTuple
-    where
-        setEnvTuple = ($ True) . flip . uncurry $ setEnv
+  where
+    setEnvTuple = ($ True) . flip . uncurry $ setEnv
 
 server :: Int -> CacheContainer -> IO ()
 server port cacheContainer = scotty port $ do
-    middleware $ static cacheContainer
+  middleware $ static cacheContainer
 
-    Landing.routes
-    Client.routes
-    Session.routes
-    Bookmark.routes
+  Landing.routes
+  Client.routes
+  Session.routes
+  Bookmark.routes
 
-    notFound General.View.notFound
+  notFound General.View.notFound
 
 static :: CacheContainer -> Middleware
 static cacheContainer = staticPolicy' cacheContainer $ addBase "public"

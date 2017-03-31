@@ -20,16 +20,16 @@ import Extension.Applicative ((<#>))
 
 hashPassword :: IsString stringy => ByteString -> IO $ Maybe stringy
 hashPassword password = hashedPassword <&> fmap fromByteString
-    where
-        hashedPassword = join $ hasher <#> password
-        hasher = hashPasswordUsingPolicy <$> appHashingPolicy
-        fromByteString = fromString . BS.unpack
+  where
+    hashedPassword = join $ hasher <#> password
+    hasher = hashPasswordUsingPolicy <$> appHashingPolicy
+    fromByteString = fromString . BS.unpack
 
 validatePassword :: ByteString -> ByteString -> Bool
 validatePassword = BCrypt.validatePassword
 
 appHashingPolicy :: IO HashingPolicy
 appHashingPolicy = do
-    lookupEnv "ARKSINK_BCRYPT_COST" >>= \cost ->
-        return slowerBcryptHashingPolicy { preferredHashCost = maybe 14 read cost
-                                         , preferredHashAlgorithm = "$2b$" }
+  lookupEnv "ARKSINK_BCRYPT_COST" >>= \cost ->
+    return slowerBcryptHashingPolicy { preferredHashCost = maybe 14 read cost
+                                     , preferredHashAlgorithm = "$2b$" }

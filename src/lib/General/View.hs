@@ -9,5 +9,5 @@ import Static (staticPage)
 
 notFound :: ActionM ()
 notFound = do
-    status notFound404
-    staticPage "static/404.html"
+  status notFound404
+  staticPage "static/404.html"
