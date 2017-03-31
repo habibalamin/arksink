@@ -4,7 +4,7 @@ module URL (source
           , nugget
           , jbpVideos) where
 
-import Data.String (IsString, fromString)
+import Data.String (IsString)
 
 source :: IsString url => url
 source = "http://code.alaminium.me/habibalamin/arksink.git"

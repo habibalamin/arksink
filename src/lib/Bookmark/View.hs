@@ -5,6 +5,7 @@ module Bookmark.View (index, show, new) where
 import Prelude hiding (show)
 import qualified Prelude
 import Text.Blaze.Html5 (Html, (!))
+import Web.Scotty (ActionM)
 import Control.Monad (forM_)
 import qualified Text.Blaze.Html5 as H
 import qualified Text.Blaze.Html5.Attributes as A
@@ -26,7 +27,7 @@ instance H.ToMarkup Bookmark where
                 externalURL = H.toValue $ bookmarkURL bookmark
                 title = bookmarkTitle bookmark
 
-index :: [Bookmark] -> Html
+index :: [Bookmark] -> ActionM Html
 index bookmarks = layout "" $ do
     H.h1 "Bookmarks"
 
@@ -39,10 +40,10 @@ index bookmarks = layout "" $ do
         H.section ! A.id "bookmarks" $ do
             forM_ bookmarks H.toHtml
 
-show :: Bookmark -> Html
+show :: Bookmark -> ActionM Html
 show bookmark = layout "" $ H.toHtml bookmark
 
-new :: Html
+new :: ActionM Html
 new = layout "" $ do
     H.h1 "New bookmark"
 

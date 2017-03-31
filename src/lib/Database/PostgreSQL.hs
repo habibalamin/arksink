@@ -1,4 +1,4 @@
-module Database (connection) where
+module Database.PostgreSQL (connection) where
 
 import System.Environment (getEnv)
 import Database.PostgreSQL.Simple (connect, defaultConnectInfo, Connection(..), ConnectInfo(..))

@@ -17,16 +17,16 @@ routes :: ScottyM ()
 routes = do
     get Bookmark.URL.indexRoute $ do
         bookmarks <- liftAndCatchIO getBookmarks
-        html . renderHtml . Bookmark.View.index $ bookmarks
+        Bookmark.View.index bookmarks >>= html . renderHtml
 
     get Bookmark.URL.showRoute $ do
         bookmarkId :: Int <- param "id"
         bookmark <- liftAndCatchIO $ getBookmark bookmarkId
-        let showBookmark = html . renderHtml . Bookmark.View.show
+        let showBookmark = (>>= html . renderHtml) . Bookmark.View.show
             in maybe General.View.notFound showBookmark bookmark
 
     get Bookmark.URL.newRoute $ do
-        html . renderHtml $ Bookmark.View.new
+        Bookmark.View.new >>= html . renderHtml
 
     post Bookmark.URL.createRoute $ do
         title :: String <- param "title"
