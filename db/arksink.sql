@@ -2,7 +2,7 @@
 -- PostgreSQL database dump
 --
 
--- Dumped from database version 9.6.1
+-- Dumped from database version 9.6.2
 -- Dumped by pg_dump version 9.6.2
 
 SET statement_timeout = 0;
@@ -41,7 +41,8 @@ SET default_with_oids = false;
 CREATE TABLE bookmarks (
     id integer NOT NULL,
     title text,
-    url text NOT NULL
+    url text NOT NULL,
+    creator_id integer NOT NULL
 );
 
 
@@ -123,6 +124,14 @@ ALTER TABLE ONLY bookmarks
 
 ALTER TABLE ONLY clients
     ADD CONSTRAINT clients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: bookmarks bookmarks_creator_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY bookmarks
+    ADD CONSTRAINT bookmarks_creator_id_fkey FOREIGN KEY (creator_id) REFERENCES clients(id);
 
 
 --
