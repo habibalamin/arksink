@@ -34,12 +34,13 @@ getBookmark bookmarkId = do
   c <- PG.connection
   head <$> query c "SELECT id, title, url FROM bookmarks WHERE id = ? LIMIT 1" [bookmarkId]
 
-createBookmark :: (ToField flike, IsString id) => flike -> flike -> IO id
-createBookmark title url = do
+-- FIXME: I can't allow creatorId to be a different type from title & url.
+createBookmark :: (ToField flike, IsString id) => flike -> flike -> flike -> IO id
+createBookmark creatorId title url = do
   -- Polymorphic string value of the first field of the first (i.e. inserted) row
   fromString . show . P.head . P.head <$> idInRow where
-    idInRow = PG.connection >>= \c -> query c sqlString [title, url] :: IO [[Int]]
-    sqlString = "INSERT INTO bookmarks (title, url) VALUES (?, ?) RETURNING id"
+    idInRow = PG.connection >>= \c -> query c sqlString [creatorId, title, url] :: IO [[Int]]
+    sqlString = "INSERT INTO bookmarks (creator_id, title, url) VALUES (?, ?, ?) RETURNING id"
 
 deleteBookmark :: ToField id => id -> IO ()
 deleteBookmark bookmarkId = do

@@ -12,6 +12,9 @@ import Bookmark.Data (getBookmarks, getBookmark, createBookmark, deleteBookmark)
 import qualified Bookmark.URL as Bookmark.URL
 import qualified Bookmark.View as Bookmark.View
 import qualified General.View as General.View
+import SessionClient.Data (getCurrentClient, SessionClient(..))
+import Client.Data (Client(..))
+import RequestInfo (relativeRefererOrRoot)
 
 routes :: ScottyM ()
 routes = do
@@ -26,13 +29,22 @@ routes = do
       in maybe General.View.notFound showBookmark bookmark
 
   get Bookmark.URL.newRoute $ do
-    Bookmark.View.new >>= html . renderHtml
+    currentClient <- getCurrentClient
+    case currentClient of
+      Guest -> redirect =<< relativeRefererOrRoot
+      SignedIn _ -> html . renderHtml =<< Bookmark.View.new
 
   post Bookmark.URL.createRoute $ do
     title :: String <- param "title"
     url :: String <- param "url"
-    bookmarkId <- liftAndCatchIO $ createBookmark title url
-    redirect $ Bookmark.URL.show bookmarkId
+    currentClient <- getCurrentClient
+    case currentClient of
+      -- TODO: display error message for failure reason.
+      Guest -> html . renderHtml =<< Bookmark.View.new
+      SignedIn client -> do
+        let creatorId = show $ clientId client
+        bookmarkId <- liftAndCatchIO $ createBookmark creatorId title url
+        redirect $ Bookmark.URL.show bookmarkId
 
   get Bookmark.URL.editRoute $ do
     text "Edit bookmark"
