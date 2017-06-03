@@ -8,6 +8,7 @@ import Network.Wai.Middleware.Static (initCaching,
                                       CacheContainer(..),
                                       staticPolicy',
                                       addBase)
+import Cookie.Secure.Middleware (secureCookies)
 import Network.Wai (Middleware)
 
 import qualified Landing as Landing
@@ -28,6 +29,7 @@ loadEnvFile = Dotenv.parseFile ".env" >>= mapM_ setEnvTuple
 server :: Int -> CacheContainer -> IO ()
 server port cacheContainer = scotty port $ do
   middleware $ static cacheContainer
+  middleware secureCookies
 
   Landing.routes
   Client.routes

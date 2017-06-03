@@ -43,7 +43,7 @@ class Eq signable => Signable signable where
   serialize :: Signed signable -> ByteString
   serialize (Signed signable digest) =
     convertToBase Base64URLUnpadded (serializeSignable signable)
-    `BS.append` "|signature:" `BS.append`
+    `BS.append` "|signature," `BS.append`
     BS.pack (show digest)
 
   deserialize :: ByteString -> Maybe (Signed signable)
@@ -52,7 +52,7 @@ class Eq signable => Signable signable where
     <*> (rightToMaybe signature >>= digestFromByteString)
       where
         (encodedMessage, base16Signature) =
-          EBS.stripPrefix "|signature:"
+          EBS.stripPrefix "|signature,"
           <$> BS.span (/= '|') bs
         signature :: Either String ByteString
         signature = convertFromBase Base16 base16Signature
@@ -78,7 +78,7 @@ instance Signable Encrypted where
         (serializeSignable message) :: HMAC SHA256
 
   serializeSignable encrypted =
-    "iv:" `BS.append`
+    "iv," `BS.append`
     convertToBase Base64URLUnpadded (BS.pack . getIV $ encrypted)
     `BS.append` "|" `BS.append`
     convertToBase Base64URLUnpadded (getSecret encrypted)
@@ -88,7 +88,7 @@ instance Signable Encrypted where
     <*> (rightToMaybe secret)
       where
         (base64Secret, base64IV) =
-          EBS.stripPrefix "iv:" . EBS.stripSuffix "|"
+          EBS.stripPrefix "iv," . EBS.stripSuffix "|"
           <$> swap (BS.spanEnd (/= '|') bs)
         iv = convertFromBase Base64URLUnpadded base64IV
         secret = convertFromBase Base64URLUnpadded base64Secret
