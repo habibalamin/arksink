@@ -8,7 +8,11 @@ import Web.Scotty.Trans (liftAndCatchIO)
 import Text.Blaze.Html.Renderer.Text (renderHtml)
 import Data.Maybe (maybe)
 
-import Bookmark.Data (getBookmarks, getBookmark, createBookmark, deleteBookmark)
+import Bookmark.Data (getBookmarks
+                    , getBookmarksFromClient
+                    , getBookmark
+                    , createBookmark
+                    , deleteBookmark)
 import qualified Bookmark.URL as Bookmark.URL
 import qualified Bookmark.View as Bookmark.View
 import qualified General.View as General.View
@@ -21,6 +25,14 @@ routes = do
   get Bookmark.URL.indexRoute $ do
     bookmarks <- liftAndCatchIO getBookmarks
     Bookmark.View.index bookmarks >>= html . renderHtml
+
+  get Bookmark.URL.mineRoute $ do
+    currentClient <- getCurrentClient
+    case currentClient of
+      Guest -> General.View.forbidden
+      SignedIn client -> do
+        bookmarks <- liftAndCatchIO $ getBookmarksFromClient client
+        html . renderHtml =<< Bookmark.View.mine bookmarks
 
   get Bookmark.URL.showRoute $ do
     bookmarkId :: Int <- param "id"

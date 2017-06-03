@@ -3,6 +3,7 @@
 
 module Bookmark.Data (Bookmark(..)
                     , getBookmarks
+                    , getBookmarksFromClient
                     , getBookmark
                     , createBookmark
                     , deleteBookmark) where
@@ -14,6 +15,7 @@ import Data.String (IsString(..), fromString)
 import Database.PostgreSQL.Simple (query, query_, Only(..), execute)
 import Database.PostgreSQL.Simple.FromRow (FromRow(..), field)
 import Database.PostgreSQL.Simple.ToField (ToField)
+import Client.Data (Client(..))
 import Control.Type.Operator (type ($))
 
 import qualified Database.PostgreSQL as PG (connection)
@@ -28,6 +30,14 @@ instance FromRow Bookmark where
 
 getBookmarks :: IO [Bookmark]
 getBookmarks = PG.connection >>= flip query_ "SELECT id, title, url FROM bookmarks"
+
+getBookmarksFromClient :: Client -> IO [Bookmark]
+getBookmarksFromClient client = do
+    c <- PG.connection
+    query c "SELECT id, title, url FROM bookmarks WHERE creator_id = ?"
+      $ Only creatorId
+      where
+        creatorId = clientId client
 
 getBookmark :: ToField id => id -> IO $ Maybe Bookmark
 getBookmark bookmarkId = do

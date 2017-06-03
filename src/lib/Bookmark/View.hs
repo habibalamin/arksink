@@ -1,6 +1,6 @@
 {-# LANGUAGE OverloadedStrings #-}
 
-module Bookmark.View (index, show, new) where
+module Bookmark.View (index, mine, show, new) where
 
 import Prelude hiding (show)
 import qualified Prelude
@@ -28,8 +28,14 @@ instance H.ToMarkup Bookmark where
         title = bookmarkTitle bookmark
 
 index :: [Bookmark] -> ActionM Html
-index bookmarks = layout "" $ do
-  H.h1 "Bookmarks"
+index = listView "Bookmarks"
+
+mine :: [Bookmark] -> ActionM Html
+mine = listView "My Bookmarks"
+
+listView :: String -> [Bookmark] -> ActionM Html
+listView title bookmarks = layout "" $ do
+  H.h1 $ H.toHtml title
 
   if null bookmarks then do
     H.h2 "Oh… looks like you don't have any yet!"
