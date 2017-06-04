@@ -16,7 +16,7 @@ import Network.HTTP.Types.Header (Header
 import Network.HTTP.Types.Status (status200)
 import qualified Data.ByteString.Char8 as BS
 import Data.Maybe (catMaybes)
-import Cookie.Secure (encryptAndSignIO, verifyAndDecryptIO)
+import Cookie.Secure (encryptNullIVAndSignIO, verifyAndDecryptIO)
 import Data.List.Split (splitOn)
 import Control.Type.Operator (type ($))
 
@@ -53,7 +53,10 @@ encryptAndSignCookieHeader (name, value) = (,)
         flip BS.append metadata <$> encryptAndSignCookie cookie
       encryptAndSignCookie c =
         BS.intercalate "="
-        <$> mapM encryptAndSignIO
+        -- OPTIMIZE: Use IV for value, but not name, so that the cookie
+        -- can actually be deleted while keeping the value as secure as
+        -- possible.
+        <$> mapM encryptNullIVAndSignIO
         (map BS.pack (splitOn "=" (BS.unpack c)))
 
 replaceRequestHeaders :: Request -> RequestHeaders -> Request
