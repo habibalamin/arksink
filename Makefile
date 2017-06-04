@@ -27,11 +27,17 @@ clean-assets:
 	echo 'Cleaning assets!'
 	rm -rf public/assets
 
-run-server:
-	stack exec dotenv -- -o -f .envdefaults -f .env 'stack ghci $(GHCI_OPTIONS) --main-is Arksink:exe:arksink-server'
+run-server: build
+	stack exec dotenv -- -o -f .envdefaults -f .env 'stack exec arksink-server'
 
-run-client:
+run-client: build
+	stack exec dotenv -- -o -f .envdefaults -f .env 'stack exec arksink'
+
+client-repl:
 	stack exec dotenv -- -o -f .envdefaults -f .env 'stack ghci $(GHCI_OPTIONS) --main-is Arksink:exe:arksink-client'
+
+server-repl:
+	stack exec dotenv -- -o -f .envdefaults -f .env 'stack ghci $(GHCI_OPTIONS) --main-is Arksink:exe:arksink-server'
 
 new-migration:
 	if [ -n "$(name)" ]; then \
