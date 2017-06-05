@@ -1,7 +1,11 @@
-Arksink
-=======
+Arksink — bookmark management for the indecisive
+================================================
 
-Bookmark management for the indecisive.
+Arksink is a bookm[ark sync]ing solution for people who use multiple browsers. It consists of a web app with a UI & API, and a synchronising client daemon.
+
+It may also be necessary to create browser extensions to deal with tags in browsers without native tag support for bookmarks.
+
+Currently, only the server has been implemented, and it is incomplete.
 
 ## Getting Started
 
