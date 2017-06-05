@@ -5,6 +5,8 @@ Bookmark management for the indecisive.
 
 ## Getting Started
 
+You'll need Haskell Stack to install dependencies.
+
 ### Running the server
 
 First, you need to create the database:
