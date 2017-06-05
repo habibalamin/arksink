@@ -14,6 +14,8 @@ Currently, only the server has been implemented, and it is incomplete.
 All of these packages are available on Homebrew (macOS), Debian, and FreeBSD, except where noted.
 
 - You'll need [Haskell Stack](https://www.haskellstack.org) to install the Haskell dependencies.
+- Arksink is backed by the [PostgreSQL](https://www.postgresql.org) database for persistence.
+- [Redis](https://redis.io) is required to store client sessions and other cache data.
 - We use [Yarn](https://yarnpkg.com) to manage asset dependencies.
 - [SassC](https://github.com/sass/sassc) is required to compile the Sass stylesheets.
 - [Elm](http://elm-lang.org) is required to compile the Elm code to JS. FreeBSD doesn't carry this in their package repositories (yet), but you can install it with Yarn.
