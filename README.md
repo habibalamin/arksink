@@ -18,7 +18,7 @@ All of these packages are available on Homebrew (macOS), Debian, and FreeBSD, ex
 - [Redis](https://redis.io) is required to store client sessions and other cache data.
 - We use [Yarn](https://yarnpkg.com) to manage asset dependencies.
 - [SassC](https://github.com/sass/sassc) is required to compile the Sass stylesheets.
-- [Elm](http://elm-lang.org) is required to compile the Elm code to JS. FreeBSD doesn't carry this in their package repositories (yet), but you can install it with Yarn.
+- [Elm](http://elm-lang.org) is used for the web UI to provide interactivity and make RESTful requests. FreeBSD doesn't carry this in their package repositories (yet), but you can install it with Yarn.
 - [CoffeeScript](http://coffeescript.org) is required to compile the thin Elm-mounting code to JS. This may be removed in a future date if we can get away with using Elm for everything and keeping the JS code to mount-only.
 
 ### Running the server
