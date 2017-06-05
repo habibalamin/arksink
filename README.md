@@ -9,7 +9,7 @@ Currently, only the server has been implemented, and it is incomplete.
 
 ## Getting Started
 
-You'll need Haskell Stack to install dependencies.
+You'll need [Haskell Stack](https://www.haskellstack.org) to install dependencies.
 
 ### Running the server
 
