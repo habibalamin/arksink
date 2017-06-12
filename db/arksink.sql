@@ -97,6 +97,15 @@ ALTER SEQUENCE clients_id_seq OWNED BY clients.id;
 
 
 --
+-- Name: migrations; Type: TABLE; Schema: public; Owner: -
+--
+
+CREATE TABLE migrations (
+    id character varying(255) NOT NULL
+);
+
+
+--
 -- Name: bookmarks id; Type: DEFAULT; Schema: public; Owner: -
 --
 
@@ -124,6 +133,14 @@ ALTER TABLE ONLY bookmarks
 
 ALTER TABLE ONLY clients
     ADD CONSTRAINT clients_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: migrations migrations_pkey; Type: CONSTRAINT; Schema: public; Owner: -
+--
+
+ALTER TABLE ONLY migrations
+    ADD CONSTRAINT migrations_pkey PRIMARY KEY (id);
 
 
 --
