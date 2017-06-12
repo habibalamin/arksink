@@ -23,18 +23,10 @@ All of these packages are available on Homebrew (macOS), Debian, and FreeBSD, ex
 
 ### Running the server
 
-First, you need to create the database:
+First, you need to create the database, then apply the migrations. All you need to do is run the `migrate` task, which will automatically create the database if it doesn't exist yet:
 
 ```
-createdb arksink
-```
-
-Then, apply the migrations. Since we don't track applied migrations yet, or have any Make tasks to run unapplied ones, it takes a bit of manual work.
-
-If you're running them on a fresh database, you can get away with a simple loop that indiscriminately applies them in order:
-
-```
-for migration in db/migrations/*; do psql -d arksink -f "$migration"; done
+make migrate
 ```
 
 You'll need to have a Redis server running with all the default settings:
