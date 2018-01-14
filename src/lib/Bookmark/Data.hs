@@ -10,7 +10,7 @@ module Bookmark.Data (Bookmark(..)
 
 import Prelude hiding (head)
 import qualified Prelude as P
-import List (head)
+import Protolude (head)
 import Data.String (IsString(..), fromString)
 import Database.PostgreSQL.Simple (query, query_, Only(..), execute)
 import Database.PostgreSQL.Simple.FromRow (FromRow(..), field)
