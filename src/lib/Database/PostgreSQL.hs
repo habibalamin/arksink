@@ -7,6 +7,7 @@ connection :: IO Connection
 connection = do
   username <- getEnv "ARKSINK_DB_USERNAME"
   password <- getEnv "ARKSINK_DB_PASSWORD"
+  database <- getEnv "ARKSINK_DB_NAME"
   connect defaultConnectInfo { connectUser = username
                              , connectPassword = password
-                             , connectDatabase = "arksink" }
+                             , connectDatabase = database }
