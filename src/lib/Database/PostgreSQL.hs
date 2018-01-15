@@ -1,4 +1,4 @@
-module Database.PostgreSQL (connection) where
+module Database.PostgreSQL (connection, withConnection) where
 
 import System.Environment (getEnv)
 import Database.PostgreSQL.Simple (connect, defaultConnectInfo, Connection(..), ConnectInfo(..))
@@ -11,3 +11,6 @@ connection = do
   connect defaultConnectInfo { connectUser = username
                              , connectPassword = password
                              , connectDatabase = database }
+
+withConnection :: (Connection -> IO a) -> IO a
+withConnection = (connection >>=)
