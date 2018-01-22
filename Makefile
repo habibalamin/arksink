@@ -21,7 +21,7 @@ assets: clean-assets
 	       -o public/assets/scripts \
 	       -- `find src/lib/assets/scripts -name '*.coffee' -exec echo -n '{} ' ';' | sed 's/ $$//'`
 	mkdir -p public/assets/styles
-	sassc -t compressed -m \
+	sassc -t compressed -m auto \
 	      -I node_modules \
 	      -- src/lib/assets/styles/arksink.scss public/assets/styles/arksink.css
 
