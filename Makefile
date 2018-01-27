@@ -1,5 +1,5 @@
-.SILENT: database setup migrate build assets clean-assets run-server run-client server-repl client-repl new-migration
-.PHONY: database setup migrate build assets clean-assets run-server run-client server-repl client-repl new-migration
+.SILENT: database setup migrate build assets clean-assets run-server run-client server-repl client-repl test new-migration
+.PHONY: database setup migrate build assets clean-assets run-server run-client server-repl client-repl test new-migration
 
 GHCI_OPTIONS = --ghci-options -XOverloadedStrings --ghci-options -XScopedTypeVariables
 
@@ -40,6 +40,9 @@ client-repl:
 
 server-repl:
 	stack exec dotenv -- -o -f .envdefaults -f .env 'stack ghci $(GHCI_OPTIONS) --main-is Arksink:exe:arksink-server'
+
+test:
+	stack exec dotenv -- -o -f .envdefaults -f .env 'stack test'
 
 new-migration:
 	if [ -n "$(name)" ]; then \
