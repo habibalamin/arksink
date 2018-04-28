@@ -56,18 +56,18 @@ database:
 	# - Create database if non-existent.
 	# - Create migrations table if non-existent.
 	database_exists=$$(stack exec dotenv -- -o -f .envdefaults -f .env \
-	  "psql -t -A -c \
-	    \"SELECT true FROM pg_database WHERE datname = 'arksink'\"") && \
+	  "psql -t -A -U $$ARKSINK_DB_USERNAME -h $$ARKSINK_DB_HOST -c \
+	    \"SELECT true FROM pg_database WHERE datname = '$$ARKSINK_DB_NAME'\"") && \
 	if [ ! "$$database_exists" = "t" ]; then \
 	  stack exec dotenv -- -o -f .envdefaults -f .env \
-	    'createdb $$ARKSINK_DB_NAME' ; \
+	    'createdb -O $$ARKSINK_DB_USERNAME -U $$ARKSINK_DB_USERNAME -h $$ARKSINK_DB_HOST $$ARKSINK_DB_NAME' ; \
 	fi
 	stack exec dotenv -- -o -f .envdefaults -f .env \
-	  'psql -d $$ARKSINK_DB_NAME -c \
+	  'psql -d $$ARKSINK_DB_NAME -h $$ARKSINK_DB_HOST -U $$ARKSINK_DB_USERNAME -c \
 	    "CREATE TABLE IF NOT EXISTS migrations (id VARCHAR(255) PRIMARY KEY)"' \
 	  2>/dev/null >/dev/null
 	stack exec dotenv -- -o -f .envdefaults -f .env \
-	  'pg_dump --schema-only --no-owner $$ARKSINK_DB_NAME > db/arksink.sql'
+	  'pg_dump --schema-only --no-owner -U $$ARKSINK_DB_USERNAME -h $$ARKSINK_DB_HOST $$ARKSINK_DB_NAME > db/arksink.sql'
 
 migrate: database
 	# - Create temporary directory.
@@ -78,7 +78,8 @@ migrate: database
 	# - Dump updated schema.
 	tmpdir=$$(mktemp -d) && \
 	stack exec dotenv -- -o -f .envdefaults -f .env \
-	  'psql -d $$ARKSINK_DB_NAME -t -A -c "SELECT id FROM MIGRATIONS"'\
+	  'psql -d $$ARKSINK_DB_NAME -h $$ARKSINK_DB_HOST -U $$ARKSINK_DB_USERNAME -t -A \
+	    -c "SELECT id FROM MIGRATIONS"'\
 	  > "$$tmpdir/applied-migrations" && \
 	find db/migrations -depth 1 \
 	  | sed -e 's:^db/migrations/::' -e 's:\.sql$$::' \
@@ -89,12 +90,12 @@ migrate: database
 	for migration in $$unapplied_migrations; do \
 	  echo "=== Applying migration: $${migration}"; \
 	  stack exec dotenv -- -o -f .envdefaults -f .env \
-	    'psql -d $$ARKSINK_DB_NAME -f \
+	    'psql -d $$ARKSINK_DB_NAME -h $$ARKSINK_DB_HOST -U $$ARKSINK_DB_USERNAME -f \
 	      db/migrations/'"$$migration"'.sql' && \
 	  stack exec dotenv -- -o -f .envdefaults -f .env \
-	    'psql -d $$ARKSINK_DB_NAME -c \
+	    'psql -d $$ARKSINK_DB_NAME -h $$ARKSINK_DB_HOST -U $$ARKSINK_DB_USERNAME -c \
 	      "INSERT INTO migrations VALUES ('"'$$migration'"')"' \
 	    >/dev/null ; \
 	done
 	stack exec dotenv -- -o -f .envdefaults -f .env \
-	  'pg_dump --schema-only --no-owner $$ARKSINK_DB_NAME > db/arksink.sql'
+	  'pg_dump --schema-only --no-owner -U $$ARKSINK_DB_USERNAME -h $$ARKSINK_DB_HOST $$ARKSINK_DB_NAME > db/arksink.sql'
