@@ -1,0 +1,23 @@
+version: '3.6'
+services:
+  web:
+    build: .
+    ports:
+      - '3000:3000'
+    volumes:
+      - type: 'bind'
+        source: .
+        target: /var/www/arksink
+    links:
+      - db
+      - cache
+    environment:
+      - ARKSINK_DB_HOST=db
+      - ARKSINK_DB_USER=postgres
+      - ARKSINK_REDIS_HOST=cache
+  db:
+    image: postgres:9.6.2-alpine
+    ports:
+      - '5432:5432'
+  cache:
+    image: redis:alpine
