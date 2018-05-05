@@ -1,13 +1,16 @@
-.SILENT: database setup migrate build assets clean-assets run-server run-client server-repl client-repl test new-migration
-.PHONY: database setup migrate build assets clean-assets run-server run-client server-repl client-repl test new-migration
+.SILENT: database setup migrate dotenv build assets clean-assets run-server run-client server-repl client-repl test new-migration
+.PHONY: database setup migrate dotenv build assets clean-assets run-server run-client server-repl client-repl test new-migration
 
 GHCI_OPTIONS = --ghci-options -XOverloadedStrings --ghci-options -XScopedTypeVariables
 
 missing_arg = "Missing required argument '$(1)': make $@ $(1)=$(2)"
 
+dotenv:
+	stack install dotenv >/dev/null 2>&1
+
 setup: build migrate
 
-build: assets
+build: dotenv assets
 	# FIXME: dotenv ignores blank environment variables.
 	stack exec dotenv -- -o -f .env 'stack build'
 
@@ -35,13 +38,13 @@ run-server: build
 run-client: build
 	stack exec dotenv -- -o -f .env 'stack exec arksink'
 
-client-repl:
+client-repl: dotenv
 	stack exec dotenv -- -o -f .env 'stack ghci $(GHCI_OPTIONS) --main-is Arksink:exe:arksink-client'
 
-server-repl:
+server-repl: dotenv
 	stack exec dotenv -- -o -f .env 'stack ghci $(GHCI_OPTIONS) --main-is Arksink:exe:arksink-server'
 
-test:
+test: dotenv
 	stack exec dotenv -- -o -f .env 'stack test'
 
 new-migration:
@@ -51,7 +54,7 @@ new-migration:
 	  echo $(call missing_arg,name,migration_name); \
 	fi
 
-database:
+database: dotenv
 	# OPTIMIZE: load environment with dotenv once.
 	# - Create database if non-existent.
 	# - Create migrations table if non-existent.
@@ -69,7 +72,7 @@ database:
 	stack exec dotenv -- -o -f .env \
 	  'pg_dump --schema-only --no-owner -U $$ARKSINK_DB_USERNAME -h $$ARKSINK_DB_HOST $$ARKSINK_DB_NAME > db/arksink.sql'
 
-migrate: database
+migrate: dotenv database
 	# - Create temporary directory.
 	# - Store applied migrations in temporary file.
 	# - Store all applicable migrations in temporary file.
