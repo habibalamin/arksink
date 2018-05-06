@@ -32,7 +32,7 @@ clean-assets:
 	echo 'Cleaning assets!'
 	rm -rf public/assets
 
-run-server: build
+run-server: build migrate
 	stack exec dotenv -- -o -f .env 'stack exec arksink-server'
 
 run-client: build
@@ -41,7 +41,7 @@ run-client: build
 client-repl: dotenv
 	stack exec dotenv -- -o -f .env 'stack ghci $(GHCI_OPTIONS) --main-is Arksink:exe:arksink-client'
 
-server-repl: dotenv
+server-repl: dotenv migrate
 	stack exec dotenv -- -o -f .env 'stack ghci $(GHCI_OPTIONS) --main-is Arksink:exe:arksink-server'
 
 test: dotenv
