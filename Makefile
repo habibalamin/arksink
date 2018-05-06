@@ -84,7 +84,7 @@ migrate: dotenv database
 	  'psql -d $$ARKSINK_DB_NAME -h $$ARKSINK_DB_HOST -U $$ARKSINK_DB_USERNAME -t -A \
 	    -c "SELECT id FROM MIGRATIONS"'\
 	  > "$$tmpdir/applied-migrations" && \
-	find db/migrations -depth 1 \
+	find db/migrations -mindepth 1 -maxdepth 1 \
 	  | sed -e 's:^db/migrations/::' -e 's:\.sql$$::' \
 	  > "$$tmpdir/migrations" && \
 	unapplied_migrations=$$(diff \
