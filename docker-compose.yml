@@ -1,4 +1,8 @@
 version: '3.6'
+
+volumes:
+  pgdata:
+  stack:
 services:
   web:
     build: .
@@ -8,16 +12,22 @@ services:
       - type: 'bind'
         source: .
         target: /var/www/arksink
+      - stack:/home/arksink/.stack
     links:
       - db
       - cache
     environment:
       - ARKSINK_DB_HOST=db
-      - ARKSINK_DB_USER=postgres
+      - ARKSINK_DB_NAME=arksink
+      - ARKSINK_DB_USERNAME=postgres
       - ARKSINK_REDIS_HOST=cache
   db:
     image: postgres:9.6.2-alpine
+    volumes:
+      - pgdata:/var/lib/postgresql/data
     ports:
       - '5432:5432'
   cache:
     image: redis:alpine
+  proxy:
+    image: nginx:alpine
